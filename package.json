@@ -1,0 +1,17 @@
+{
+  "name": "@utatatata/aka-sha",
+  "version": "0.0.0",
+  "description": "A command-line dictionary and thesaurus using Wordnik API.",
+  "main": "src/aka.js",
+  "bin": {
+    "aka": "bin/aka"
+  },
+  "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
+  "author": "utakuma <i@utakuma.info>",
+  "license": "MIT",
+  "private": "true",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "yargs": "^13.2.2"
+  }
+}
