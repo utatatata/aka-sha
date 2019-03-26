@@ -1,25 +1,31 @@
 {
   "name": "@utatatata/aka-sha",
   "version": "0.1.0",
+  "private": "true",
   "description": "A command-line dictionary and thesaurus using Wordnik API.",
+  "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
+  "license": "MIT",
+  "author": "utakuma <i@utakuma.info>",
   "main": "src/akasha.js",
   "bin": {
-    "akasha": "bin/akasha",
-    "aka": "bin/akasha"
+    "aka": "bin/akasha",
+    "akasha": "bin/akasha"
   },
-  "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
-  "author": "utakuma <i@utakuma.info>",
-  "license": "MIT",
-  "private": "true",
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "prefix": "sort-package-json",
+    "fix": "prettier --write **/*.{js,json,md} .prettierrc.js",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "yargs": "^13.2.2"
   },
   "devDependencies": {
-    "jest": "^24.5.0"
+    "husky": "^1.3.1",
+    "jest": "^24.5.0",
+    "lint-staged": "^8.1.5",
+    "prettier": "^1.16.4",
+    "sort-package-json": "^1.21.0"
   }
 }
