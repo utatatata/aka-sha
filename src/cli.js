@@ -1,12 +1,57 @@
 const yargs = require('yargs')
 const akasha = require('./aka-sha')
 
+const audio = data => {
+  console.log('Audio:')
+  data.forEach(obj => {
+    console.log(`  ${obj.audioType}: ${obj.fileUrl}`)
+    console.log()
+    console.log(`    (${obj.attributionText})`)
+    console.log()
+    console.log()
+  })
+}
 const definitions = data => {
   console.log('Definitions:')
   data.forEach(obj => {
     console.log(`  ${obj.text}`)
+    console.log()
     console.log(`    (${obj.attributionText})`)
+    console.log()
+    console.log()
   })
+}
+const etymologies = data => {
+  console.log('Etymologies:')
+  data.forEach(str => {
+    console.log(`  XML:`)
+    console.log()
+    console.log(`${str}`)
+    console.log()
+    console.log()
+  })
+}
+const examples = data => {
+  console.log('Examples:')
+  data.examples.forEach(obj => {
+    console.log(`  ${obj.text}`)
+    console.log()
+    console.log(
+      `    (${obj.title}, ${obj.year}${
+        obj.url !== undefined ? ', ' + obj.url : ''
+      })`
+    )
+    console.log()
+    console.log()
+  })
+}
+const frequency = data => {
+  console.log('Frequency:')
+  data.frequency.forEach(obj => {
+    console.log(`  the year ${obj.year}: ${obj.count.toString().padStart(3)}`)
+  })
+  console.log()
+  console.log()
 }
 
 module.exports = yargs.locale('en').command(
@@ -65,9 +110,35 @@ module.exports = yargs.locale('en').command(
         type: 'boolean',
       }),
   async argv => {
+    if (argv.audio) {
+      const data = await akasha.word.audio(argv.word).catch(e => {
+        console.error('Error!', e)
+      })
+      audio(data)
+    }
     if (argv.definitions) {
-      const data = await akasha.word.definitions(argv.word)
+      const data = await akasha.word.definitions(argv.word).catch(e => {
+        console.error('Error!', e)
+      })
       definitions(data)
+    }
+    if (argv.etymologies) {
+      const data = await akasha.word.etymologies(argv.word).catch(e => {
+        console.error('Error!', e)
+      })
+      etymologies(data)
+    }
+    if (argv.examples) {
+      const data = await akasha.word.examples(argv.word).catch(e => {
+        console.error('Error!', e)
+      })
+      examples(data)
+    }
+    if (argv.frequency) {
+      const data = await akasha.word.frequency(argv.word).catch(e => {
+        console.error('Error!', e)
+      })
+      frequency(data)
     }
 
     if (
