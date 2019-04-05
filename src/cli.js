@@ -2,7 +2,6 @@ const yargs = require('yargs')
 const akasha = require('./aka-sha')
 
 const audio = data => {
-  console.log('Audio:')
   data.forEach(obj => {
     console.log(`  ${obj.audioType}: ${obj.fileUrl}`)
     console.log(`    (${obj.attributionText})`)
@@ -10,7 +9,6 @@ const audio = data => {
   })
 }
 const definitions = data => {
-  console.log('Definitions:')
   data.forEach(obj => {
     console.log(`  ${obj.text}`)
     console.log(`    (${obj.attributionText})`)
@@ -18,7 +16,6 @@ const definitions = data => {
   })
 }
 const etymologies = data => {
-  console.log('Etymologies:')
   data.forEach(str => {
     console.log(`  XML:`)
     console.log(`${str}`)
@@ -26,7 +23,6 @@ const etymologies = data => {
   })
 }
 const examples = data => {
-  console.log('Examples:')
   data.examples.forEach(obj => {
     console.log(`  ${obj.text}`)
     console.log(
@@ -38,17 +34,50 @@ const examples = data => {
   })
 }
 const frequency = data => {
-  console.log('Frequency:')
   data.frequency.forEach(obj => {
     console.log(`  the year ${obj.year}: ${obj.count.toString().padStart(3)}`)
   })
   console.log()
-  console.log()
+}
+
+const hyphenation = data => {}
+const phrases = data => {}
+const pronunciations = data => {}
+const relatedWords = data => {}
+const scrabbleScore = data => {}
+const topExample = data => {}
+
+const dealWith = {
+  audio,
+  definitions,
+  etymologies,
+  examples,
+  frequency,
+  hyphenation,
+  phrases,
+  pronunciations,
+  relatedWords,
+  scrabbleScore,
+  topExample,
+}
+
+const display = async (whatAbout, word) => {
+  try {
+    const data = await akasha.word[whatAbout](word)
+    console.log(`${whatAbout.replace(/^./, head => head.toUpperCase())}:`)
+    dealWith[whatAbout](data)
+    console.log()
+  } catch (e) {
+    console.log('Oops!')
+    console.log('Just a moment.')
+    console.log(e)
+    process.exit()
+  }
 }
 
 module.exports = yargs.locale('en').command(
   '$0 <word>',
-  'get infomation of the word',
+  'get infomation for the word',
   yargs =>
     yargs
       .option('audio', {
@@ -102,49 +131,55 @@ module.exports = yargs.locale('en').command(
         type: 'boolean',
       }),
   async argv => {
-    if (argv.audio) {
-      const data = await akasha.word.audio(argv.word).catch(e => {
-        console.error('Error!', e)
-        process.exit()
-      })
-      audio(data)
+    if (argv.all) {
+      return
     }
-    if (argv.definitions) {
-      const data = await akasha.word.definitions(argv.word).catch(e => {
-        console.error('Error!', e)
-        process.exit()
-      })
-      definitions(data)
-    }
-    if (argv.etymologies) {
-      const data = await akasha.word.etymologies(argv.word).catch(e => {
-        console.error('Error!', e)
-        process.exit()
-      })
-      etymologies(data)
-    }
-    if (argv.examples) {
-      const data = await akasha.word.examples(argv.word).catch(e => {
-        console.error('Error!', e)
-        process.exit()
-      })
-      examples(data)
-    }
-    if (argv.frequency) {
-      const data = await akasha.word.frequency(argv.word).catch(e => {
-        console.error('Error!', e)
-        process.exit()
-      })
-      frequency(data)
-    }
+
+    Object.keys(akasha.word).forEach(whatAbout => {
+      if (argv[whatAbout]) {
+        display(whatAbout, argv.word)
+      }
+    })
+    // if (argv.audio) {
+    //   display('audio', argv.word)
+    // }
+    // if (argv.definitions) {
+    //   display('definitions', argv.word)
+    // }
+    // if (argv.etymologies) {
+    //   display('etymologies', argv.word)
+    // }
+    // if (argv.examples) {
+    //   display('examples', argv.word)
+    // }
+    // if (argv.frequency) {
+    //   display('frequency', argv.word)
+    // }
+    // if (argv.hyphenation) {
+    //   display('hyphenation', argv.word)
+    // }
+    // if (argv.phrases) {
+    //   display('phrases', argv.word)
+    // }
+    // if (argv.pronunciations) {
+    //   display('pronunciations', argv.word)
+    // }
+    // if (argv.relatedWords) {
+    //   display('relatedWords', argv.word)
+    // }
+    // if (argv.scrabbleScore) {
+    //   display('scrabbleScore', argv.word)
+    // }
+    // if (argv.topExample) {
+    //   display('topExample', argv.word)
+    // }
 
     if (
       Object.keys(akasha.word)
         .map(apiName => argv[apiName])
         .every(opt => opt !== true)
     ) {
-      const data = await akasha.word.definitions(argv.word)
-      definitions(data)
+      display('definitions', argv.word)
     }
   }
 )
