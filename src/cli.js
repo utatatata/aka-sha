@@ -5,9 +5,7 @@ const audio = data => {
   console.log('Audio:')
   data.forEach(obj => {
     console.log(`  ${obj.audioType}: ${obj.fileUrl}`)
-    console.log()
     console.log(`    (${obj.attributionText})`)
-    console.log()
     console.log()
   })
 }
@@ -15,9 +13,7 @@ const definitions = data => {
   console.log('Definitions:')
   data.forEach(obj => {
     console.log(`  ${obj.text}`)
-    console.log()
     console.log(`    (${obj.attributionText})`)
-    console.log()
     console.log()
   })
 }
@@ -25,9 +21,7 @@ const etymologies = data => {
   console.log('Etymologies:')
   data.forEach(str => {
     console.log(`  XML:`)
-    console.log()
     console.log(`${str}`)
-    console.log()
     console.log()
   })
 }
@@ -35,13 +29,11 @@ const examples = data => {
   console.log('Examples:')
   data.examples.forEach(obj => {
     console.log(`  ${obj.text}`)
-    console.log()
     console.log(
       `    (${obj.title}, ${obj.year}${
         obj.url !== undefined ? ', ' + obj.url : ''
       })`
     )
-    console.log()
     console.log()
   })
 }
@@ -113,30 +105,35 @@ module.exports = yargs.locale('en').command(
     if (argv.audio) {
       const data = await akasha.word.audio(argv.word).catch(e => {
         console.error('Error!', e)
+        process.exit()
       })
       audio(data)
     }
     if (argv.definitions) {
       const data = await akasha.word.definitions(argv.word).catch(e => {
         console.error('Error!', e)
+        process.exit()
       })
       definitions(data)
     }
     if (argv.etymologies) {
       const data = await akasha.word.etymologies(argv.word).catch(e => {
         console.error('Error!', e)
+        process.exit()
       })
       etymologies(data)
     }
     if (argv.examples) {
       const data = await akasha.word.examples(argv.word).catch(e => {
         console.error('Error!', e)
+        process.exit()
       })
       examples(data)
     }
     if (argv.frequency) {
       const data = await akasha.word.frequency(argv.word).catch(e => {
         console.error('Error!', e)
+        process.exit()
       })
       frequency(data)
     }
