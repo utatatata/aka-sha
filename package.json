@@ -6,10 +6,9 @@
   "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
   "license": "MIT",
   "author": "utakuma <i@utakuma.info>",
-  "main": "src/akasha.js",
+  "main": "src/aka-sha.js",
   "bin": {
-    "aka": "bin/akasha",
-    "akasha": "bin/akasha"
+    "aka": "bin/aka-sha"
   },
   "scripts": {
     "coverage": "jest --coverage",

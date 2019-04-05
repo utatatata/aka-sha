@@ -1,8 +1,12 @@
 const yargs = require('yargs')
-const aka = require('./aka')
+const akasha = require('./aka-sha')
 
-module.exports =
-  yargs
-    .command('$0', 'default', () => {}, argv => {
-      console.log(aka.greet('AKAsha'))
-    })
+module.exports = yargs.command(
+  '$0',
+  'default',
+  () => {},
+  async argv => {
+    const d = await akasha.word.definitions('hello')
+    console.log(d)
+  }
+)
