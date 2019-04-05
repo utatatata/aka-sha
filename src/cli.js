@@ -1,9 +1,14 @@
 const yargs = require('yargs')
 const akasha = require('./aka-sha')
 
+const toTitle = str =>
+  str
+    .replace(/^./, head => head.toUpperCase())
+    .replace(/-./g, str => ' ' + str[1].toUpperCase())
+
 const audio = data => {
   data.forEach(obj => {
-    console.log(`  ${obj.audioType}: ${obj.fileUrl}`)
+    console.log(`  ${toTitle(obj.audioType)}: ${obj.fileUrl}`)
     console.log(`    (${obj.attributionText})`)
     console.log()
   })
@@ -40,12 +45,60 @@ const frequency = data => {
   console.log()
 }
 
-const hyphenation = data => {}
-const phrases = data => {}
-const pronunciations = data => {}
-const relatedWords = data => {}
-const scrabbleScore = data => {}
-const topExample = data => {}
+const hyphenation = data => {
+  console.log(
+    '  ' +
+      data
+        .map(
+          syllable =>
+            (syllable.type === 'stress'
+              ? "'"
+              : syllable.type === 'secondary stress'
+              ? '`'
+              : '') + syllable.text
+        )
+        .join(' - ')
+  )
+}
+
+const phrases = data => {
+  data.forEach(obj => {
+    console.log(`  ${obj.gram1} ${obj.gram2}`)
+    console.log()
+  })
+}
+
+const pronunciations = data => {
+  data.forEach(obj => {
+    console.log(`  ${toTitle(obj.rawType)}: ${obj.raw}`)
+    console.log()
+  })
+}
+
+const relatedWords = data => {
+  data.forEach(obj => {
+    console.log(`  ${toTitle(obj.relationshipType)}:`)
+    obj.words.forEach(word => {
+      console.log(`    ${word}`)
+    })
+    console.log()
+  })
+}
+
+const scrabbleScore = data => {
+  console.log(`  Score: ${data.value}`)
+  console.log()
+}
+
+const topExample = data => {
+  console.log(`  ${data.text}`)
+  console.log(
+    `    (${data.title}, ${data.year}${
+      data.url !== undefined ? ', ' + data.url : ''
+    })`
+  )
+  console.log()
+}
 
 const dealWith = {
   audio,
@@ -64,7 +117,7 @@ const dealWith = {
 const display = async (whatAbout, word) => {
   try {
     const data = await akasha.word[whatAbout](word)
-    console.log(`${whatAbout.replace(/^./, head => head.toUpperCase())}:`)
+    console.log(`${toTitle(whatAbout)}:`)
     dealWith[whatAbout](data)
     console.log()
   } catch (e) {
@@ -131,53 +184,16 @@ module.exports = yargs.locale('en').command(
         type: 'boolean',
       }),
   async argv => {
-    if (argv.all) {
-      return
-    }
-
     Object.keys(akasha.word).forEach(whatAbout => {
       if (argv[whatAbout]) {
         display(whatAbout, argv.word)
       }
     })
-    // if (argv.audio) {
-    //   display('audio', argv.word)
-    // }
-    // if (argv.definitions) {
-    //   display('definitions', argv.word)
-    // }
-    // if (argv.etymologies) {
-    //   display('etymologies', argv.word)
-    // }
-    // if (argv.examples) {
-    //   display('examples', argv.word)
-    // }
-    // if (argv.frequency) {
-    //   display('frequency', argv.word)
-    // }
-    // if (argv.hyphenation) {
-    //   display('hyphenation', argv.word)
-    // }
-    // if (argv.phrases) {
-    //   display('phrases', argv.word)
-    // }
-    // if (argv.pronunciations) {
-    //   display('pronunciations', argv.word)
-    // }
-    // if (argv.relatedWords) {
-    //   display('relatedWords', argv.word)
-    // }
-    // if (argv.scrabbleScore) {
-    //   display('scrabbleScore', argv.word)
-    // }
-    // if (argv.topExample) {
-    //   display('topExample', argv.word)
-    // }
 
     if (
       Object.keys(akasha.word)
-        .map(apiName => argv[apiName])
-        .every(opt => opt !== true)
+        .map(whatAbout => argv[whatAbout])
+        .every(option => option !== true)
     ) {
       display('definitions', argv.word)
     }
