@@ -6,7 +6,7 @@
   "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
   "license": "MIT",
   "author": "utakuma <i@utakuma.info>",
-  "main": "src/aka-sha.js",
+  "main": "src/api/index.js",
   "bin": {
     "aka": "bin/aka-sha"
   },
