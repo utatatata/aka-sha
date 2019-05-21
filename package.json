@@ -1,14 +1,38 @@
 {
   "name": "@utatatata/aka-sha",
   "version": "1.0.0",
-  "private": "true",
+  "private": true,
   "description": "A command-line dictionary and thesaurus using Wordnik API.",
-  "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
+  "keywords": [
+    "aka",
+    "aka-sha",
+    "cli",
+    "dictionary",
+    "thesaurus",
+    "wordnik"
+  ],
+  "homepage": "https://github.com/utatatata/aka-sha/tree/master/",
+  "bugs": {
+    "url": "https://github.com/utatatata/aka-sha/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:utatatata/aka-sha.git"
+  },
   "license": "MIT",
   "author": "utakuma <i@utakuma.info>",
+  "files": [
+    "bin",
+    "src"
+  ],
   "main": "src/api/index.js",
   "bin": {
-    "aka": "bin/aka-sha"
+    "aka": "bin/aka-sha",
+    "aka-sha": "bin/aka-sha"
+  },
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
   },
   "scripts": {
     "coverage": "jest --coverage",
