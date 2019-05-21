@@ -1,6 +1,6 @@
 {
   "name": "@utatatata/aka-sha",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "private": "true",
   "description": "A command-line dictionary and thesaurus using Wordnik API.",
   "repository": "git@github.com.utatatata:utatatata/aka-sha.git",
