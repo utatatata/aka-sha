@@ -1,6 +1,6 @@
 {
   "name": "@utatatata/aka-sha",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "A command-line dictionary and thesaurus using Wordnik API.",
   "keywords": [
